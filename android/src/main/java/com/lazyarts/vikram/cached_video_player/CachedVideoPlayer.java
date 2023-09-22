@@ -88,12 +88,7 @@ final class CachedVideoPlayer {
             if (httpHeaders != null && !httpHeaders.isEmpty()) {
                 cacheDataSourceFactory.setHeaders(httpHeaders);
             }
-
-            if (formatHint == FORMAT_HLS) {
-                dataSourceFactory = new DefaultDataSource.Factory(context);
-            } else {
-                dataSourceFactory = cacheDataSourceFactory;
-            }
+            dataSourceFactory = cacheDataSourceFactory;
         } else {
             dataSourceFactory = new DefaultDataSource.Factory(context);
         }
@@ -149,7 +144,7 @@ final class CachedVideoPlayer {
                         new DefaultDataSource.Factory(context, mediaDataSourceFactory))
                         .createMediaSource(MediaItem.fromUri(uri));
             case C.TYPE_HLS:
-                return new HlsMediaSource.Factory(mediaDataSourceFactory)
+                return new HlsMediaSource.Factory(new DefaultDataSource.Factory(context))
                         .createMediaSource(MediaItem.fromUri(uri));
             case C.TYPE_OTHER:
                 return new ProgressiveMediaSource.Factory(mediaDataSourceFactory)
