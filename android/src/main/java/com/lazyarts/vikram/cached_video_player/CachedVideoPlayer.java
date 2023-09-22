@@ -88,7 +88,12 @@ final class CachedVideoPlayer {
             if (httpHeaders != null && !httpHeaders.isEmpty()) {
                 cacheDataSourceFactory.setHeaders(httpHeaders);
             }
-            dataSourceFactory = cacheDataSourceFactory;
+
+            if (formatHint == FORMAT_HLS) {
+                dataSourceFactory = new DefaultDataSource.Factory(context);
+            } else {
+                dataSourceFactory = cacheDataSourceFactory;
+            }
         } else {
             dataSourceFactory = new DefaultDataSource.Factory(context);
         }
